@@ -12,12 +12,10 @@ class testquestion(Page):
     form_fields = ['testQ']
     def before_next_page(self):
         if self.player.testQ == "3":
-            # self.participant.vars['testQ_passed'] = True
             self.player.testQ_passed = True
 
 class QPage(Page):
     def is_displayed(self):
-        # return self.participant.vars['testQ_passed'] == True
         return self.player.testQ_passed == True
 
 class Q1(QPage):
