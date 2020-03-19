@@ -6,6 +6,8 @@ import random
 
 class Intro(Page):
     form_model = 'player'
+    def is_displayed(self):
+        return self.round_number == 1
 
 class testquestion(Page):
     form_model = 'player'
