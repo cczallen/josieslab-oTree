@@ -51,7 +51,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     testQ_passed = models.BooleanField(initial=False)
 
-    testQ = models.StringField(label="問題(3為正解)(commit & deploy test)", widget=widgets.RadioSelect, choices=["1","2","3","4"])
+    testQ = models.StringField(label="問題(3為正解)", widget=widgets.RadioSelect, choices=["1","2","3","4"])
 
     accept1 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
     accept2 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
