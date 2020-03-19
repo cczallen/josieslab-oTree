@@ -1,0 +1,97 @@
+{% extends "otree/Page.html" %}
+{% load otree static %}
+
+{% block global_styles  %}
+<style>
+    .word{
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        border: 4px solid black;
+        width: 280px;
+        height: 300px;
+        font-size: 40px;
+    }
+    .hint-area{
+        font-size: 30px;
+        text-align: center;
+
+    }
+    .ans{
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        border: 0px solid black;
+        width: 280px;
+        height: 140px;
+    }
+    .text-area{
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        border: 0px solid black;
+        width: 280px;
+        height: 140px;
+        display: none;
+    }
+    .time-area{
+        display: none;
+    }
+    .debug-info{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block global_scripts %}
+<script>
+    const audiotime = 4;
+    let isfinish = false;
+    let clicks = 0;
+    let duration = -audiotime;
+    const page = document.querySelector('.page');
+    const pageid = page.dataset.pageid;
+    const decisionduration = document.querySelector('#id_decisionduration'+pageid);
+    const answer_yes = document.querySelector('#id_accept'+pageid+'_0');
+    const answer_no = document.querySelector('#id_accept'+pageid+'_1');
+
+    window.addEventListener('keydown',function(e){
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const text = document.querySelectorAll('.text-area');
+        console.log(text[1])
+        const listenTime = document.querySelector('#id_listenTime'+pageid);
+
+        clicks += 1;
+        listenTime.value = clicks;
+
+        if(!audio) return;
+        audio.currentTime = 0;
+        audio.play();
+        setTimeout(()=>{
+            text[0].style.display = 'block';
+            text[1].style.display = 'block';
+        }, 500);
+    })
+    
+    let timer = setInterval(()=>{
+        if(isfinish){
+            clearInterval(timer);
+            }
+        if(clicks >= 1){duration += 1;
+            decisionduration.value=duration;
+            }
+    }, 1000);
+
+                            
+    const button = document.querySelector('.btn');
+    button.addEventListener('click',function(e){
+        console.log(answer_yes.checked)
+        if(answer_yes.checked || answer_no.checked){
+            isfinish = true;
+        }
+        
+    })
+
+</script>
+{% endblock %}
