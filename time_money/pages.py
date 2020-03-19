@@ -14,6 +14,12 @@ class testquestion(Page):
         if self.player.testQ == "3":
             self.player.testQ_passed = True
 
+class testquestion_failed(Page):
+    form_model = 'player'
+    form_fields = ['testQ_failedguess']
+    def is_displayed(self):
+        return self.player.testQ_passed == False
+
 class QPage(Page):
     def is_displayed(self):
         return self.player.testQ_passed == True
@@ -75,7 +81,7 @@ class Survey(QPage):
     form_model = 'player'
     form_fields = ['gender','bloodgroup','taiwanese','econ_manage','class_num','grade','guess']
 
-intro = [Intro, testquestion]
+intro = [Intro, testquestion, testquestion_failed]
 list = [Q1, Q2]
 random.shuffle(list)
 intro.extend(list)
