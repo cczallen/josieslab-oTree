@@ -11,12 +11,11 @@ class testquestion(Page):
     form_model = 'player'
     form_fields = ['testQ']
     def before_next_page(self):
-        if self.player.testQ == "3":
+        if self.player.testQ == '56':
             self.player.testQ_passed = True
 
 class testquestion_failed(Page):
     form_model = 'player'
-    form_fields = ['testQ_failedguess']
     def is_displayed(self):
         return self.player.testQ_passed == False
 
