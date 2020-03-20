@@ -51,7 +51,14 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     testQ_passed = models.BooleanField(initial=False)
 
-    testQ = models.StringField(label="驗證問題：請回答 30 x 2 - 4 = ?", widget=widgets.RadioSelect, choices=["1","26","56","64"])
+    testQ = models.StringField(label="驗證問題：請回答 30 x 2 - 4 = ?aaaaa", widget=widgets.RadioSelect, choices=["1","26","56","64"])
+
+    # def make_label(label, replacement):
+    #     return '選擇今天的報酬'
+
+
+    # def make_field(label):
+    #     return models.StringField(label=label, widget=widgets.RadioSelect, choices=["要","不要"])
 
     accept1 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
     accept2 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
