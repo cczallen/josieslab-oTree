@@ -20,7 +20,7 @@ SESSION_CONFIGS = [
         name='time_money',
         display_name="Time or Money",
         num_demo_participants=1,
-        app_sequence=['time_money']
+        app_sequence=['authentication_survey', 'time_money']
     ),
 ]
 
