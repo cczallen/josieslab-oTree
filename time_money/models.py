@@ -20,7 +20,7 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'time_money'
     players_per_group = None
-    num_rounds = 3
+    num_rounds = 1
     
     subject = "我"
         
@@ -49,10 +49,6 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    testQ_passed = models.BooleanField(initial=False)
-
-    testQ = models.StringField(label="驗證問題：請回答 30 x 2 - 4 = ?", widget=widgets.RadioSelect, choices=["1","26","56","64"])
-
     accept1 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
     accept2 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
     accept3 = models.StringField(label="請問您是否要將報酬更換為上述選項", widget=widgets.RadioSelect, choices=["要","不要"])
