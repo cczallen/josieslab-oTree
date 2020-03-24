@@ -32,6 +32,14 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    # testQ_passed = models.BooleanField(initial=False)
-    testQ = models.StringField(label="驗證問題：請回答 30 x 2 - 4 = ?", widget=widgets.RadioSelect, choices=["1","26","56","64"])
+    authentication_question = models.BooleanField(
+        label="驗證問題：請回答 30 x 2 - 4 = ?", 
+        widget=widgets.RadioSelect, 
+        choices=[
+            [False, '1'],
+            [False, '26'],
+            [True, '56'],
+            [False, '64'],
+            ]
+        )
 
