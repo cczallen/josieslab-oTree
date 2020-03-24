@@ -4,18 +4,17 @@ from .models import Constants
 
 class TPage(Page):
     def is_displayed(self):
-        # return self.player.testQ_passed == False
-        if 'testQ_passed' in self.participant.vars:
-            return self.participant.vars['testQ_passed'] == False
+        key = 'auth_question_passed'
+        if key in self.participant.vars:
+            return self.participant.vars[key] == False
         return True
 
 class testquestion(TPage):
     form_model = 'player'
-    form_fields = ['testQ']
+    form_fields = ['authentication_question']
     def before_next_page(self):
-        if self.player.testQ == '56':
-            # self.player.testQ_passed = True
-            self.participant.vars['testQ_passed'] = True
+        if self.player.authentication_question == True:
+            self.participant.vars['auth_question_passed'] = True
 
 class testquestion_failed(TPage):
     form_model = 'player'
