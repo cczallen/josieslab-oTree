@@ -22,6 +22,12 @@ SESSION_CONFIGS = [
         num_demo_participants=1,
         app_sequence=['authentication_survey', 'time_money']
     ),
+    dict(
+        name='rounds_test',
+        display_name="rounds_test",
+        num_demo_participants=1,
+        app_sequence=['rounds_test']
+    ),
 ]
 
 

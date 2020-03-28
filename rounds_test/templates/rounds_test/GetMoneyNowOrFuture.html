@@ -1,0 +1,124 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block global_styles  %}
+<style>
+    body {
+        text-align: center;
+    }
+    #audio-button {
+        font-size: 30px;
+        margin: 30px;
+    }
+    .hidden-area {
+        display: none;
+    }
+    .word {
+        margin: auto;
+        padding: 8px;
+        text-align: center;
+        border: 4px solid black;
+        width: 280px;
+        height: auto;
+        font-size: 40px;
+        display: none;
+    }
+    .formfields-area {
+        display: none;
+    }
+    .nextbutton-area {
+        display: none;
+    }
+    .debug-info {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <button type="button" id="audio-button"> 請點擊播放音檔 </button>
+
+    <div class="word">
+    	<div class="subject-area">
+        	{{ Constants.subject }} <br>
+    	</div>
+        {{ player.waiting_period }} 週後  <br>
+        得到 <br>
+        {{ player.gained_amount }}元
+    </div>
+    
+
+    <div class="formfields-area">
+        {% formfield player.get_money_now_or_future %}
+    </div>
+
+    <div class="nextbutton-area">
+        {% next_button %}
+    </div>
+
+    <div class="hidden-area">
+        {% formfield player.waiting_period %}
+        {% formfield player.gained_amount %}
+
+        {% formfield player.num_listen_times %}
+        {% formfield player.decision_duration %}
+    </div>
+
+{% endblock %}
+
+
+{% block global_scripts %}
+<script>
+    var num_listen_times = 0; // 點擊 播放音檔的次數
+    var is_answered = false; // 是否點選選項了
+    
+    $('#audio-button').click(function(){
+        // 播放音檔的次數
+        num_listen_times++;
+        $('#id_num_listen_times').val(num_listen_times)
+
+        $('.word').show(); // 抓到文字區
+        $('.subject-area').hide(); // 抓到「我」
+
+        // 播放音檔
+        const audio = new Audio("{% static '4_120.mp3' %}");
+        if(!audio) {
+            return;
+        }
+
+        audio.play();
+
+        // 經過4.5秒後選項顯示
+        setTimeout(()=>{
+            $('.formfields-area').show();
+            $('.nextbutton-area').show();
+        }, 4500);
+
+        // decision_duration
+        if(num_listen_times == 1) {
+            var duration = 0
+            let interval = 1
+            let timer = setInterval(()=>{ // 每隔1秒執行一次
+                if(num_listen_times >= 1){
+                    duration += interval; // 按下播放後開始計時
+                    $('#id_decision_duration').val(duration)
+                }
+                if(is_answered) {
+                    clearInterval(timer);
+                }
+            }, interval * 1000);
+
+            $('.otree-btn-next').click(function(){
+                radio_id_prefix = '#id_get_money_now_or_future_'
+                is_answered = $(radio_id_prefix + '0').is(":checked") || $(radio_id_prefix + '1').is(":checked")
+            })
+        }
+    })
+
+</script>
+{% endblock %}
