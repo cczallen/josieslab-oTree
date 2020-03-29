@@ -9,6 +9,7 @@ class GetMoneyNowOrFuture(Page):
     form_fields = [
     	'waiting_period',
     	'gained_amount',
+        'treatment_subject_included',
     	'get_money_now_or_future', 
     	'num_listen_times', 'decision_duration',
     	]
