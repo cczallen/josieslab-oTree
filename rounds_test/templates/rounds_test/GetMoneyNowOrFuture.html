@@ -10,14 +10,14 @@
     body {
         text-align: center;
     }
-    #audio-button {
+    #speak-button {
         font-size: 30px;
         margin: 30px;
     }
     .hidden-area {
         display: none;
     }
-    .word {
+    .speech-area {
         margin: auto;
         padding: 8px;
         text-align: center;
@@ -28,6 +28,7 @@
         display: none;
     }
     .formfields-area {
+        margin: 20px;
         display: none;
     }
     .nextbutton-area {
@@ -41,9 +42,9 @@
 
 {% block content %}
 
-    <button type="button" id="audio-button"> 請點擊播放音檔 </button>
+    <button type="button" id="speak-button"> 請點擊播放語音 </button>
 
-    <div class="word">
+    <div class="speech-area">
     	<div class="subject-area">
         	{{ Constants.subject }} <br>
     	</div>
@@ -77,27 +78,31 @@
     var num_listen_times = 0; // 點擊 播放音檔的次數
     var is_answered = false; // 是否點選選項了
     
-    $('#audio-button').click(function(){
-        // 播放音檔的次數
+    $('#speak-button').click(function(){
+        // 播放語音的次數
         num_listen_times++;
         $('#id_num_listen_times').val(num_listen_times)
 
-        $('.word').show(); // 抓到文字區
-        $('.subject-area').hide(); // 抓到「我」
+        $speech_area = $('.speech-area');
+        $speech_area.show(); // 抓到文字區
 
-        // 播放音檔
-        const audio = new Audio("{% static '4_120.mp3' %}"); // TODO
-        if(!audio) {
-            return;
+        treatment_subject_included = true; // TODO
+        var speech;
+        if (treatment_subject_included) {
+            $('.subject-area').show(); // 抓到「我」
+            speech = $speech_area.text();
+
+        } else {
+            $('.subject-area').hide(); // 抓到「我」
+            speech = $speech_area.clone().children().remove().end().text();
         }
 
-        audio.play();
-
-        // 經過4.5秒後選項顯示
-        setTimeout(()=>{
+        speak(speech, function onend() {
+            // 播放語音後選項顯示
+            alert('onend');
             $('.formfields-area').show();
             $('.nextbutton-area').show();
-        }, 4500);
+        });
 
         // decision_duration
         if(num_listen_times == 1) {
@@ -119,6 +124,18 @@
             })
         }
     })
+
+    function speak(text, onend) {
+        var synth = window.speechSynthesis;
+        var utterThis = new SpeechSynthesisUtterance(text);
+        utterThis.onend = onend;
+        utterThis.onerror = function(event) {
+            console.error('SpeechSynthesisUtterance.onerror');
+        }
+        utterThis.pitch = 1;
+        utterThis.rate = 0.8;
+        synth.speak(utterThis);
+    }
 
 </script>
 {% endblock %}
