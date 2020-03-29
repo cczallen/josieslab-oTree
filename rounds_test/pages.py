@@ -1,6 +1,6 @@
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
-from .models import Constants, WatingPeriod, GainedAmount
+from .models import Constants, WaitingPeriod, GainedAmount
 from random import randint
 import random
 
@@ -16,7 +16,7 @@ class GetMoneyNowOrFuture(Page):
     def generate_questionare_parameters_pairs(self):
         q_params_pairs = []
         # 產生所有週數和金額的組合
-        for each_waiting_period in list(WatingPeriod):
+        for each_waiting_period in list(WaitingPeriod):
           for each_gained_amount in list(GainedAmount):
             q_params_pairs.append(
               dict(

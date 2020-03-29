@@ -23,10 +23,10 @@ class StringEnum(Enum):
         return str(self.value)
 
 
-class WatingPeriod(StringEnum):
+class WaitingPeriod(StringEnum):
     ONE_WEEK    = 1
-    FOUR_WEEK   = 2
-    TWELVE_WEEK = 3
+    FOUR_WEEK   = 4
+    TWELVE_WEEK = 12
 
 
 class GainedAmount(StringEnum):
@@ -43,7 +43,7 @@ class GainedAmount(StringEnum):
 class Constants(BaseConstants):
     name_in_url = 'rounds_test'
     players_per_group = None
-    num_rounds = len(WatingPeriod) * len(GainedAmount) #3 #24
+    num_rounds = len(WaitingPeriod) * len(GainedAmount) #3 #24
     gained_amount_now = 100
     key_q_params_pairs = 'questionare_parameters_pairs'
     key_selected_q = 'selected_questionare'
