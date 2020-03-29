@@ -65,6 +65,7 @@
     <div class="hidden-area">
         {% formfield player.waiting_period %}
         {% formfield player.gained_amount %}
+        {% formfield player.treatment_subject_included %}
 
         {% formfield player.num_listen_times %}
         {% formfield player.decision_duration %}
@@ -86,16 +87,14 @@
         $speech_area = $('.speech-area');
         $speech_area.show(); // 抓到文字區
 
-        treatment_subject_included = true; // TODO
         var speech;
-        if (treatment_subject_included) {
+        {% if player.treatment_subject_included == True %}
             $('.subject-area').show(); // 抓到「我」
             speech = $speech_area.text();
-
-        } else {
+        {% else %}
             $('.subject-area').hide(); // 抓到「我」
             speech = $speech_area.clone().children().remove().end().text();
-        }
+        {% endif %}
 
         speak(speech, function onend() {
             // 播放語音後選項顯示

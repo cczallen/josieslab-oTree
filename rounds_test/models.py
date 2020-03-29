@@ -10,6 +10,7 @@ from otree.api import (
 )
 
 from enum import Enum
+import random
 
 author = 'Your name here'
 
@@ -54,16 +55,21 @@ class OptionOfGetMoney(Enum):
     OPTION_NOW = '選擇今天的報酬'
     OPTION_FUTURE = '選擇未來的報酬'
 
-    def formatted_option(option_enum):
-        treatment_subject_included = True # TODO
-        if treatment_subject_included:
+    def formatted_option(player, option_enum):
+        if player.treatment_subject_included:
             return Constants.subject + option_enum.value
         else:
             return option_enum.value
 
 
 class Subsession(BaseSubsession):
-    pass
+    def creating_session(self):
+        for p in self.get_players():
+            if self.round_number == 1:
+                p.treatment_subject_included = random.choice([True, False])
+            else:
+                previous_player = p.in_round(self.round_number - 1)
+                p.treatment_subject_included = previous_player.treatment_subject_included
 
 
 class Group(BaseGroup):
@@ -77,14 +83,17 @@ class Player(BasePlayer):
     # 獲得的報償 (hidden)
     gained_amount = models.IntegerField()
 
+    treatment_subject_included = models.BooleanField(initial = False)
+
     get_money_now_or_future = models.StringField(
         label = '請選擇您要今天或未來的報酬', 
         widget = widgets.RadioSelect, 
-        choices = [
-            ['now', OptionOfGetMoney.formatted_option(OptionOfGetMoney.OPTION_NOW)],
-            ['future', OptionOfGetMoney.formatted_option(OptionOfGetMoney.OPTION_FUTURE)],
-            ]
         )
+    def get_money_now_or_future_choices(self):
+        return [
+            ['now', OptionOfGetMoney.formatted_option(self, OptionOfGetMoney.OPTION_NOW)],
+            ['future', OptionOfGetMoney.formatted_option(self, OptionOfGetMoney.OPTION_FUTURE)],
+            ]
 
     # 聽了幾次，單位為次數 (hidden，根據使用者行為紀錄)
     num_listen_times = models.IntegerField(initial = 0)
