@@ -11,7 +11,6 @@ from otree.api import (
 
 from enum import Enum
 
-
 author = 'Your name here'
 
 doc = """
@@ -45,7 +44,9 @@ class Constants(BaseConstants):
     name_in_url = 'rounds_test'
     players_per_group = None
     num_rounds = len(WatingPeriod) * len(GainedAmount) #3 #24
-
+    gained_amount_now = 100
+    key_q_params_pairs = 'questionare_parameters_pairs'
+    key_selected_q = 'selected_questionare'
     subject = '我'
 
 
@@ -62,28 +63,7 @@ class OptionOfGetMoney(Enum):
 
 
 class Subsession(BaseSubsession):
-    def generate_question_parameters_pairs(self):
-        question_parameters_pairs = []
-        for each_waiting_period in list(WatingPeriod):
-          for each_gained_amount in list(GainedAmount):
-            question_parameters_pairs.append(
-              dict(
-                waiting_period = each_waiting_period,
-                gained_amount = each_gained_amount,
-              )
-            )
-        return question_parameters_pairs
-
-    def creating_session(self):
-        question_parameters_pairs = self.generate_question_parameters_pairs()
-        for p in self.get_players():
-            if self.round_number == 1:
-                import random
-                random.shuffle(question_parameters_pairs)
-            idx = self.round_number - 1 # list 從0開始 但 round_bnumber 從1開始
-            pair = question_parameters_pairs[idx]
-            p.waiting_period = pair['waiting_period'].value
-            p.gained_amount = pair['gained_amount'].value
+    pass
 
 
 class Group(BaseGroup):
@@ -106,11 +86,12 @@ class Player(BasePlayer):
             ]
         )
 
-
     # 聽了幾次，單位為次數 (hidden，根據使用者行為紀錄)
     num_listen_times = models.IntegerField(initial = 0)
 
     # 決策時長，單位為秒數 (hidden，根據使用者行為紀錄)
     decision_duration = models.FloatField(initial = 0)
-    
+
+    # 是否為最後電腦選中的 round (hidden，最後一回合會抽出並寫入)
+    is_selected = models.BooleanField(initial = False)
     
