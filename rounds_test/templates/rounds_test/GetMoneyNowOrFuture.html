@@ -96,12 +96,13 @@
             speech = $speech_area.clone().children().remove().end().text();
         {% endif %}
 
-        speak(speech, function onend() {
+        onend = function () {
             // 播放語音後選項顯示
-            alert('onend');
             $('.formfields-area').show();
             $('.nextbutton-area').show();
-        });
+        }
+        speak(speech, onend);
+        setTimeout(onend, 4500); // workaround: 有時候 speak 的 onend 不會進去不知道為什麼，先再加一個 timeout 確保選項會顯示
 
         // decision_duration
         if(num_listen_times == 1) {
