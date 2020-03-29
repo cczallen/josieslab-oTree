@@ -2,7 +2,7 @@
 {% load otree static %}
 
 {% block title %}
-
+    第{{ subsession.round_number }}回合
 {% endblock %}
 
 {% block global_styles  %}
@@ -86,7 +86,7 @@
         $('.subject-area').hide(); // 抓到「我」
 
         // 播放音檔
-        const audio = new Audio("{% static '4_120.mp3' %}");
+        const audio = new Audio("{% static '4_120.mp3' %}"); // TODO
         if(!audio) {
             return;
         }
