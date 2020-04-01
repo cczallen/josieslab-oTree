@@ -29,11 +29,11 @@ class GainedAmount(Enum):
     TWD105 = 105
     TWD110 = 110
     TWD115 = 115
-    TWD120 = 120
-    TWD125 = 125
-    TWD130 = 130
-    TWD135 = 135
-    TWD145 = 145
+    # TWD120 = 120
+    # TWD125 = 125
+    # TWD130 = 130
+    # TWD135 = 135
+    # TWD145 = 145
 
 
 class Constants(BaseConstants):
