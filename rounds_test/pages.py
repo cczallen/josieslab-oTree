@@ -17,7 +17,9 @@ class GetMoneyNowOrFuture(Page):
     def generate_questionare_parameters_pairs(self):
         q_params_pairs = []
         # 產生所有週數和金額的組合
-        for each_waiting_period in list(WaitingPeriod):
+        shuffled_waiting_period = list(WaitingPeriod)
+        random.shuffle(shuffled_waiting_period) # 打亂順序
+        for each_waiting_period in shuffled_waiting_period:
           for each_gained_amount in list(GainedAmount):
             q_params_pairs.append(
               dict(
@@ -32,7 +34,6 @@ class GetMoneyNowOrFuture(Page):
         # 如果已經存在，就取出
         if Constants.key_q_params_pairs not in self.participant.vars: 
             pairs = self.generate_questionare_parameters_pairs()
-            random.shuffle(pairs) # 打亂順序
             self.participant.vars[Constants.key_q_params_pairs] = pairs
         q_params_pairs = self.participant.vars[Constants.key_q_params_pairs]
 
