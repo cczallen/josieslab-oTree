@@ -19,18 +19,13 @@ Your app description
 """
 
 
-class StringEnum(Enum):
-    def __str__(self):
-        return str(self.value)
-
-
-class WaitingPeriod(StringEnum):
+class WaitingPeriod(Enum):
     ONE_WEEK    = 1
     FOUR_WEEK   = 4
     TWELVE_WEEK = 12
 
 
-class GainedAmount(StringEnum):
+class GainedAmount(Enum):
     TWD105 = 105
     TWD110 = 110
     TWD115 = 115
