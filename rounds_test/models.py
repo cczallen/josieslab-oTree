@@ -39,11 +39,11 @@ class GainedAmount(Enum):
 class Constants(BaseConstants):
     name_in_url = 'rounds_test'
     players_per_group = None
-    num_rounds = len(WaitingPeriod) * len(GainedAmount) #3 #24
+    num_rounds = len(WaitingPeriod) * len(GainedAmount)
     gained_amount_now = 100
     key_q_params_pairs = 'questionare_parameters_pairs'
     key_selected_q = 'selected_questionare'
-    subject = '我'
+    pronoun = '我'
 
 
 class OptionOfGetMoney(Enum):
@@ -51,8 +51,8 @@ class OptionOfGetMoney(Enum):
     OPTION_FUTURE = '選擇未來的報酬'
 
     def formatted_option(player, option_enum):
-        if player.treatment_subject_included:
-            return Constants.subject + option_enum.value
+        if player.treatment_pronoun_included:
+            return Constants.pronoun + option_enum.value
         else:
             return option_enum.value
 
@@ -61,10 +61,10 @@ class Subsession(BaseSubsession):
     def creating_session(self):
         for p in self.get_players():
             if self.round_number == 1:
-                p.treatment_subject_included = random.choice([True, False])
+                p.treatment_pronoun_included = random.choice([True, False])
             else:
                 previous_player = p.in_round(self.round_number - 1)
-                p.treatment_subject_included = previous_player.treatment_subject_included
+                p.treatment_pronoun_included = previous_player.treatment_pronoun_included
 
 
 class Group(BaseGroup):
@@ -78,7 +78,7 @@ class Player(BasePlayer):
     # 獲得的報償 (hidden)
     gained_amount = models.IntegerField()
 
-    treatment_subject_included = models.BooleanField(initial = False)
+    treatment_pronoun_included = models.BooleanField(initial = False)
 
     get_money_now_or_future = models.StringField(
         label = '請選擇您要今天或未來的報酬', 

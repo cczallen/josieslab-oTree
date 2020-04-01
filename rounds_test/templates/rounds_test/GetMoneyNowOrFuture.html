@@ -45,8 +45,8 @@
     <button type="button" id="speak-button"> 請點擊播放語音 </button>
 
     <div class="speech-area">
-    	<div class="subject-area">
-        	{{ Constants.subject }} <br>
+    	<div class="pronoun-area">
+        	{{ Constants.pronoun }} <br>
     	</div>
         {{ player.waiting_period }} 週後  <br>
         得到 <br>
@@ -65,7 +65,7 @@
     <div class="hidden-area">
         {% formfield player.waiting_period %}
         {% formfield player.gained_amount %}
-        {% formfield player.treatment_subject_included %}
+        {% formfield player.treatment_pronoun_included %}
 
         {% formfield player.num_listen_times %}
         {% formfield player.decision_duration %}
@@ -88,11 +88,11 @@
         $speech_area.show(); // 抓到文字區
 
         var speech;
-        {% if player.treatment_subject_included == True %}
-            $('.subject-area').show(); // 抓到「我」
+        {% if player.treatment_pronoun_included == True %}
+            $('.pronoun-area').show(); // 抓到「我」
             speech = $speech_area.text();
         {% else %}
-            $('.subject-area').hide(); // 抓到「我」
+            $('.pronoun-area').hide(); // 抓到「我」
             speech = $speech_area.clone().children().remove().end().text();
         {% endif %}
 
