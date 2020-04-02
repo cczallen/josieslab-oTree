@@ -12,10 +12,10 @@ from otree.api import (
 from enum import Enum
 import random
 
-author = 'Your name here'
+author = 'Josie_NTULAB'
 
 doc = """
-Your app description
+決策實驗-問卷部分
 """
 
 
@@ -37,7 +37,7 @@ class GainedAmount(Enum):
 
 
 class Constants(BaseConstants):
-    name_in_url = 'rounds_test'
+    name_in_url = 'EconExp1_TimePrefPronoun1_questionaire'
     players_per_group = None
     num_rounds = len(WaitingPeriod) * len(GainedAmount)
     gained_amount_now = 100

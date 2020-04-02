@@ -16,17 +16,17 @@ SESSION_CONFIGS = [
     #    num_demo_participants=3,
     #    app_sequence=['public_goods', 'payment_info']
     # ),
+    # dict(
+    #     name='time_money',
+    #     display_name="Time or Money",
+    #     num_demo_participants=1,
+    #     app_sequence=['authentication_survey', 'time_money']
+    # ),
     dict(
-        name='time_money',
-        display_name="Time or Money",
-        num_demo_participants=1,
-        app_sequence=['authentication_survey', 'time_money']
-    ),
-    dict(
-        name='rounds_test',
-        display_name="rounds_test",
+        name='EconExp1_TimePrefPronoun1',
+        display_name="EconExp1_TimePrefPronoun1",
         num_demo_participants=3,
-        app_sequence=['rounds_test']
+        app_sequence=['EconExp1_TimePrefPronoun1_questionaire']
     ),
 ]
 
