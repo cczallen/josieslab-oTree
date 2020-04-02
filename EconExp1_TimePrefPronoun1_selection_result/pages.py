@@ -4,7 +4,8 @@ from .models import Constants
 
 
 class Results(Page):
-    pass
+    def vars_for_template(self):
+        return self.participant.vars['selected_questionare']
 
 
 page_sequence = [Results]

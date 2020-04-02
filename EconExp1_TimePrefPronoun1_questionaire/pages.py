@@ -76,4 +76,4 @@ class Results(Page):
         # 只在最後一回合才顯示
         return self.round_number == Constants.num_rounds
 
-page_sequence = [GetMoneyNowOrFuture, Results]
+page_sequence = [GetMoneyNowOrFuture]
