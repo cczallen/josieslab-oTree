@@ -67,13 +67,4 @@ class GetMoneyNowOrFuture(Page):
             self.select_questionare()
 
 
-class Results(Page):
-    form_model = 'player'
-    def vars_for_template(self):
-        return self.participant.vars[Constants.key_selected_q]
-
-    def is_displayed(self):
-        # 只在最後一回合才顯示
-        return self.round_number == Constants.num_rounds
-
 page_sequence = [GetMoneyNowOrFuture]
