@@ -26,7 +26,7 @@ SESSION_CONFIGS = [
         name='EconExp1_TimePrefPronoun1',
         display_name="EconExp1_TimePrefPronoun1",
         num_demo_participants=3,
-        app_sequence=['EconExp1_TimePrefPronoun1_questionaire']
+        app_sequence=['EconExp1_TimePrefPronoun1_questionaire', 'EconExp1_TimePrefPronoun1_survey']
     ),
 ]
 
