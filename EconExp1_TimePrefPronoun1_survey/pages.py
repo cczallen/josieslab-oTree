@@ -4,7 +4,8 @@ from .models import Constants
 
 
 class Survey(Page):
-    pass
+    form_model = 'player'
+    form_fields = ['gender','bloodgroup','taiwanese','econ_manage','class_num','grade','guess']
 
 
 page_sequence = [Survey]
