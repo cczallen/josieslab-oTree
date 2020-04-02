@@ -107,11 +107,12 @@
         // decision_duration
         if(num_listen_times == 1) {
             var duration = 0
-            let interval = 1
-            let timer = setInterval(()=>{ // 每隔1秒執行一次
+            let interval = 0.1
+            let timer = setInterval(()=>{ // 每隔 interval 秒執行一次
                 if(num_listen_times >= 1){
                     duration += interval; // 按下播放後開始計時
-                    $('#id_decision_duration').val(duration)
+                    $('#id_decision_duration').val(duration.toFixed(1)) // JavaScript toFixed() Method: Convert a number into a string, keeping only N decimals
+
                 }
                 if(is_answered) {
                     clearInterval(timer);
