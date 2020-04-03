@@ -35,15 +35,28 @@ class GainedAmount(Enum):
     # TWD135 = 135
     # TWD145 = 145
 
+    def get_TWD_today(): # workaround: 為了不讓 len(GainedAmount) 跟 list(GainedAmount) 會取到 TODAY 的值，所以用了 function 來取
+        return 100
+
+class Treatment(object):
+    pronoun = '我'
+    def get_pronoun_included(player):
+        participant = player.participant
+        # lazy loading: 若不存在就決定並起來，若已存在就直接取出
+        if Constants.key_pronoun_included not in participant.vars:
+            participant.vars[Constants.key_pronoun_included] = random.choice([True, False])
+        pronoun_included = participant.vars[Constants.key_pronoun_included]
+        return pronoun_included
+
 
 class Constants(BaseConstants):
     name_in_url = 'EconExp1_TimePrefPronoun1_questionaire'
     players_per_group = None
     num_rounds = len(WaitingPeriod) * len(GainedAmount)
-    gained_amount_now = 100
     key_q_params_pairs = 'questionare_parameters_pairs'
     key_selected_q = 'selected_questionare'
-    pronoun = '我'
+    key_pronoun_included = 'treatment_pronoun_included'
+    pronoun = Treatment.pronoun
 
 
 class OptionOfGetMoney(Enum):
@@ -60,11 +73,7 @@ class OptionOfGetMoney(Enum):
 class Subsession(BaseSubsession):
     def creating_session(self):
         for p in self.get_players():
-            if self.round_number == 1:
-                p.treatment_pronoun_included = random.choice([True, False])
-            else:
-                previous_player = p.in_round(self.round_number - 1)
-                p.treatment_pronoun_included = previous_player.treatment_pronoun_included
+            p.treatment_pronoun_included = Treatment.get_pronoun_included(p)
 
 
 class Group(BaseGroup):

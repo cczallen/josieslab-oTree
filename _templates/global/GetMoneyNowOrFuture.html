@@ -1,0 +1,142 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    第{{ subsession.round_number }}回合
+{% endblock %}
+
+{% block global_styles  %}
+<style>
+    body {
+        text-align: center;
+    }
+    #speak-button {
+        font-size: 30px;
+        margin: 30px;
+    }
+    .hidden-area {
+        display: none;
+    }
+    .speech-area {
+        margin: auto;
+        padding: 8px;
+        text-align: center;
+        border: 4px solid black;
+        width: 280px;
+        height: auto;
+        font-size: 40px;
+        display: none;
+    }
+    .formfields-area {
+        margin: 20px;
+        display: none;
+    }
+    .nextbutton-area {
+        display: none;
+    }
+    .debug-info {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <button type="button" id="speak-button"> 請點擊播放語音 </button>
+
+    <div class="speech-area">
+    	<div class="pronoun-area">
+        	{{ Constants.pronoun }} <br>
+    	</div>
+        {{ player.waiting_period }} 週後  <br>
+        得到 <br>
+        {{ player.gained_amount }}元
+    </div>
+    
+
+    <div class="formfields-area">
+        {% formfield player.get_money_now_or_future %}
+    </div>
+
+    <div class="nextbutton-area">
+        {% next_button %}
+    </div>
+
+    <div class="hidden-area">
+        {% formfield player.waiting_period %}
+        {% formfield player.gained_amount %}
+        {% formfield player.treatment_pronoun_included %}
+
+        {% formfield player.num_listen_times %}
+        {% formfield player.decision_duration %}
+    </div>
+
+{% endblock %}
+
+
+{% block global_scripts %}
+<script>
+    var num_listen_times = 0; // 點擊 播放音檔的次數
+    var is_answered = false; // 是否點選選項了
+    
+    $('#speak-button').click(function(){
+        // 播放語音的次數
+        num_listen_times++;
+        $('#id_num_listen_times').val(num_listen_times)
+
+        $speech_area = $('.speech-area');
+        $speech_area.show(); // 抓到文字區
+
+        var speech;
+        {% if player.treatment_pronoun_included == True %}
+            $('.pronoun-area').show(); // 抓到「我」
+            speech = $speech_area.text();
+        {% else %}
+            $('.pronoun-area').hide(); // 抓到「我」
+            speech = $speech_area.clone().children().remove().end().text();
+        {% endif %}
+
+        onend = function () {
+            // 播放語音後選項顯示
+            $('.formfields-area').show();
+            $('.nextbutton-area').show();
+        }
+        speak(speech, onend);
+        setTimeout(onend, 4500); // workaround: 有時候 speak 的 onend 不會進去不知道為什麼，先再加一個 timeout 確保選項會顯示
+
+        // decision_duration
+        if(num_listen_times == 1) {
+            var duration = 0
+            let interval = 0.1
+            let timer = setInterval(()=>{ // 每隔 interval 秒執行一次
+                if(num_listen_times >= 1){
+                    duration += interval; // 按下播放後開始計時
+                    $('#id_decision_duration').val(duration.toFixed(1)) // JavaScript toFixed() Method: Convert a number into a string, keeping only N decimals
+
+                }
+                if(is_answered) {
+                    clearInterval(timer);
+                }
+            }, interval * 1000);
+
+            $('.otree-btn-next').click(function(){
+                radio_id_prefix = '#id_get_money_now_or_future_'
+                is_answered = $(radio_id_prefix + '0').is(":checked") || $(radio_id_prefix + '1').is(":checked")
+            })
+        }
+    })
+
+    function speak(text, onend) {
+        var synth = window.speechSynthesis;
+        var utterThis = new SpeechSynthesisUtterance(text);
+        utterThis.onend = onend;
+        utterThis.onerror = function(event) {
+            console.error('SpeechSynthesisUtterance.onerror');
+        }
+        utterThis.pitch = 1;
+        utterThis.rate = 0.8;
+        synth.speak(utterThis);
+    }
+
+</script>
+{% endblock %}

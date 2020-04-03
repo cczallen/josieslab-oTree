@@ -9,7 +9,7 @@
 	<div>
 		<p>電腦選中第{{ selected_round_number }}回合</p>
 		{% if selected_get_money_now == True %}
-    		<p>您會在今天得到{{ Constants.gained_amount_now }}元</p>
+    		<p>您會在今天得到{{ gained_amount_today }}元</p>
     	{% else %}
     		<p>您會在{{ selected_waiting_period }}週後得到{{ selected_gained_amount }}元</p>
     	{% endif %}
