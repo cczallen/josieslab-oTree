@@ -9,6 +9,8 @@ from otree.api import (
     currency_range,
 )
 
+from EconExp1_TimePrefPronoun1_questionaire.models import GainedAmount
+
 
 author = 'Josie_NTULAB'
 
@@ -21,6 +23,8 @@ class Constants(BaseConstants):
     name_in_url = 'EconExp1_TimePrefPronoun1_selection_result'
     players_per_group = None
     num_rounds = 1
+
+    gained_amount_today = GainedAmount.get_TWD_today()
 
 
 class Subsession(BaseSubsession):
