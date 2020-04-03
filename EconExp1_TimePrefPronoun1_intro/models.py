@@ -31,6 +31,7 @@ class Constants(BaseConstants):
 
     num_questions = len(WaitingPeriod) * len(GainedAmount)
     pronoun = Treatment.pronoun
+    gained_amount_today = GainedAmount.get_TWD_today()
 
 
 class Subsession(BaseSubsession):
