@@ -79,6 +79,26 @@
     var num_listen_times = 0; // 點擊 播放音檔的次數
     var is_answered = false; // 是否點選選項了
     
+    // 優先使用「Google 國語」 參考："speechSynthesis 強制使用 Chrome 中的 Google 小姐中文語音" https://gist.github.com/Eotones/d67be7262856a79a77abeeccef455ebf
+    var voice;
+    function setupVoice() {
+        var voices = synth.getVoices();
+        for(let index = 0; index < voices.length; index++) {
+            var name = voices[index].name;
+            if(name.startsWith("Google 國語")) {
+                voice = voices[index];
+                break;
+            }
+        }
+    }
+    // 參考："Speech synthesiser" https://mdn.github.io/web-speech-api/speak-easy-synthesis/
+    var synth = window.speechSynthesis;
+    setupVoice();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = setupVoice;
+    }
+
+    // 按下播放按鈕
     $('#speak-button').click(function(){
         // 播放語音的次數
         num_listen_times++;
@@ -101,7 +121,7 @@
             $('.formfields-area').show();
             $('.nextbutton-area').show();
         }
-        speak(speech, onend);
+        speak(speech, voice, onend);
         setTimeout(onend, 4500); // workaround: 有時候 speak 的 onend 不會進去不知道為什麼，先再加一個 timeout 確保選項會顯示
 
         // decision_duration
@@ -119,6 +139,7 @@
                 }
             }, interval * 1000);
 
+            // 按下 Next 按鈕
             $('.otree-btn-next').click(function(){
                 radio_id_prefix = '#id_get_money_now_or_future_'
                 is_answered = $(radio_id_prefix + '0').is(":checked") || $(radio_id_prefix + '1').is(":checked")
@@ -126,8 +147,7 @@
         }
     })
 
-    function speak(text, onend) {
-        var synth = window.speechSynthesis;
+    function speak(text, voice, onend) {
         var utterThis = new SpeechSynthesisUtterance(text);
         utterThis.onend = onend;
         utterThis.onerror = function(event) {
@@ -135,8 +155,13 @@
         }
         utterThis.pitch = 1;
         utterThis.rate = 0.8;
-        synth.speak(utterThis);
+        if (voice) {
+            utterThis.voice = voice;
+        }
+
+        window.speechSynthesis.speak(utterThis);
     }
 
 </script>
+
 {% endblock %}
